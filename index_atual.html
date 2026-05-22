@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Bandshop · Pricing Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0f0f0f;--surface:#181818;--surface2:#222;--border:#2a2a2a;--border2:#333;
+    --text:#f0f0f0;--muted:#888;--hint:#555;
+    --green:#22c55e;--green-bg:#0d2818;--amber:#f59e0b;--amber-bg:#231a07;
+    --red:#ef4444;--red-bg:#1f0d0d;--blue:#3b82f6;
+    --mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;min-height:100vh}
+  .shell{max-width:1280px;margin:0 auto;padding:0 24px}
+  header{border-bottom:1px solid var(--border);padding:20px 0;display:flex;align-items:center;justify-content:space-between}
+  .logo{font-family:var(--mono);font-size:13px;color:var(--muted);letter-spacing:.08em}
+  .logo span{color:var(--text)}
+  .badge-version{font-family:var(--mono);font-size:10px;background:var(--surface2);border:1px solid var(--border2);color:var(--muted);padding:3px 8px;border-radius:4px}
+  main{padding:32px 0 64px}
+  .howto{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:28px;display:flex;gap:32px;flex-wrap:wrap}
+  .step-item{display:flex;align-items:flex-start;gap:12px;flex:1;min-width:180px}
+  .step-num{font-family:var(--mono);font-size:11px;background:var(--surface2);border:1px solid var(--border2);color:var(--muted);width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+  .step-text{font-size:13px;color:var(--muted);line-height:1.5}
+  .step-text strong{color:var(--text);font-weight:500}
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
+  .metric{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px}
+  .metric .label{font-size:11px;font-family:var(--mono);color:var(--muted);letter-spacing:.06em;margin-bottom:8px;text-transform:uppercase}
+  .metric .val{font-size:28px;font-weight:600;line-height:1}
+  .metric .sub{font-size:11px;color:var(--hint);margin-top:4px}
+  .val-green{color:var(--green)}.val-amber{color:var(--amber)}.val-red{color:var(--red)}
+  .controls{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+  select,input[type="text"]{background:var(--surface);border:1px solid var(--border2);color:var(--text);font-family:var(--sans);font-size:13px;padding:0 12px;height:38px;border-radius:8px;outline:none;transition:border .15s}
+  select:focus,input[type="text"]:focus{border-color:var(--blue)}
+  input[type="text"]{flex:1;min-width:200px}
+  .btn{height:38px;padding:0 16px;border-radius:8px;font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border2);background:var(--surface2);color:var(--text);transition:all .15s;display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+  .btn:hover{border-color:var(--blue);color:var(--blue)}
+  .btn:active{opacity:.8;transform:scale(.98)}
+  .btn-primary{background:var(--text);color:var(--bg);border-color:var(--text)}
+  .btn-primary:hover{background:#ccc;border-color:#ccc;color:var(--bg)}
+  .table-wrap{border:1px solid var(--border);border-radius:12px;overflow:hidden;overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed;min-width:780px}
+  th{background:var(--surface);padding:10px 14px;text-align:left;font-size:10px;font-family:var(--mono);color:var(--muted);letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--border);white-space:nowrap;font-weight:400}
+  td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:var(--surface)}
+  .pname{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.4}
+  .pmeta{font-size:10px;color:var(--hint);margin-top:2px;font-family:var(--mono)}
+  .price{font-family:var(--mono);font-size:12px;white-space:nowrap}
+  .diff-ok{color:var(--green);font-family:var(--mono);font-weight:500}
+  .diff-warn{color:var(--amber);font-family:var(--mono);font-weight:500}
+  .diff-bad{color:var(--red);font-family:var(--mono);font-weight:500}
+  .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:500;white-space:nowrap}
+  .badge::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0}
+  .badge-ok{background:var(--green-bg);color:var(--green);border:1px solid #1a4d30}.badge-ok::before{background:var(--green)}
+  .badge-warn{background:var(--amber-bg);color:var(--amber);border:1px solid #4d3507}.badge-warn::before{background:var(--amber)}
+  .badge-bad{background:var(--red-bg);color:var(--red);border:1px solid #4d1414}.badge-bad::before{background:var(--red)}
+  .badge-pending{background:var(--surface2);color:var(--muted);border:1px solid var(--border2)}.badge-pending::before{background:var(--hint)}
+  .mkt-tag{font-size:10px;font-family:var(--mono);color:var(--muted)}
+  .paste-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-top:20px}
+  .paste-section h3{font-size:12px;font-family:var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+  .paste-row{display:flex;gap:10px;align-items:flex-start}
+  textarea{flex:1;background:var(--bg);border:1px solid var(--border2);color:var(--text);font-family:var(--mono);font-size:11px;padding:10px 12px;border-radius:8px;resize:vertical;min-height:60px;outline:none;line-height:1.5}
+  textarea:focus{border-color:var(--blue)}
+  .apply-msg{font-size:12px;font-family:var(--mono);margin-top:8px;min-height:18px}
+  .exec-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-top:28px;display:none}
+  .exec-section h3{font-size:12px;font-family:var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px}
+  .exec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+  .exec-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px;text-align:center}
+  .exec-card .ev{font-size:22px;font-weight:600;font-family:var(--mono)}
+  .exec-card .el{font-size:10px;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.05em;font-family:var(--mono)}
+  .empty{text-align:center;padding:40px 20px;color:var(--hint);font-size:13px}
+  @media(max-width:640px){.metrics{grid-template-columns:repeat(2,1fr)}.exec-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header>
+    <div class="logo">bandshop · <span>pricing intelligence</span></div>
+    <div class="badge-version">TVs & Celulares · 20-22/05</div>
+  </header>
+  <main>
+    <div class="howto">
+      <div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>Clique em "Gerar prompt"</strong> e envie para o Claude no claude.ai</div></div>
+      <div class="step-item"><div class="step-num">2</div><div class="step-text"><strong>Copie o JSON</strong> retornado pelo Claude no chat</div></div>
+      <div class="step-item"><div class="step-num">3</div><div class="step-text"><strong>Cole abaixo</strong> e clique em "Aplicar" para preencher a tabela</div></div>
+      <div class="step-item"><div class="step-num">4</div><div class="step-text"><strong>Gere a análise executiva</strong> com um clique após os dados carregarem</div></div>
+    </div>
+
+    <div class="metrics">
+      <div class="metric"><div class="label">Total SKUs</div><div class="val" id="m-total">19</div><div class="sub">planilha carregada</div></div>
+      <div class="metric"><div class="label">Analisados</div><div class="val" id="m-analyzed">0</div><div class="sub">com dados de mercado</div></div>
+      <div class="metric"><div class="label">Competitivos</div><div class="val val-green" id="m-ok">—</div><div class="sub">≤3% acima do menor</div></div>
+      <div class="metric"><div class="label">Fora do mercado</div><div class="val val-red" id="m-bad">—</div><div class="sub">>10% acima do menor</div></div>
+    </div>
+
+    <div class="controls">
+      <select id="filter-status" onchange="renderTable()">
+        <option value="">Todos os status</option>
+        <option value="Competitivo">Competitivo</option>
+        <option value="Atenção">Atenção</option>
+        <option value="Fora do mercado">Fora do mercado</option>
+        <option value="Pendente">Pendente análise</option>
+      </select>
+      <select id="filter-cat" onchange="renderTable()">
+        <option value="">Todas as categorias</option>
+        <option value="TVs">TVs</option>
+        <option value="Celulares">Celulares</option>
+      </select>
+      <input type="text" id="search" placeholder="Buscar produto..." oninput="renderTable()" />
+      <button class="btn btn-primary" onclick="copyPrompt()">⬡ Gerar prompt para o Claude</button>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:28%">Produto</th>
+            <th style="width:9%">Preço DE</th>
+            <th style="width:9%">Preço POR</th>
+            <th style="width:10%">Menor concorr.</th>
+            <th style="width:10%">Preço médio</th>
+            <th style="width:8%">Diferença</th>
+            <th style="width:13%">Status</th>
+            <th style="width:13%">Marketplace</th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+
+    <div class="paste-section">
+      <h3>Colar resultado do Claude</h3>
+      <div class="paste-row">
+        <textarea id="paste-area" placeholder='Cole aqui o JSON retornado pelo Claude (o array [...] completo)...'></textarea>
+        <button class="btn btn-primary" style="height:60px;align-self:stretch" onclick="applyResults()">Aplicar →</button>
+      </div>
+      <div class="apply-msg" id="apply-msg"></div>
+    </div>
+
+    <div class="exec-section" id="exec-section">
+      <h3>Resumo executivo</h3>
+      <div class="exec-grid" id="exec-grid"></div>
+      <button class="btn" onclick="copyExecPrompt()">⬡ Gerar análise executiva completa no Claude</button>
+    </div>
+  </main>
+</div>
+
+<script>
+const products = [
+  {id:0,name:"Smartphone Xiaomi Redmi 14C BR 4G Azul 256GB 4+4GB RAM Tela 6.8 MediaTek Helio G81 Ultra Camera 50MP",ean:"7908426309949",de:1414.53,por:1283.26,cat:"Celulares",parceiro:"Casas Bahia"},
+  {id:1,name:"Smartphone Samsung Galaxy A26 Tela 6.7\" 256GB 5G Camera Tripla 50MP Verde",ean:"7892509143387",de:1898.89,por:1766.96,cat:"Celulares",parceiro:"Casas Bahia"},
+  {id:2,name:"Smartphone Motorola Moto g35 5G Coral 256GB 4GB RAM Camera 50MP NFC Tela 6.7\"",ean:"7892597354382",de:1399.00,por:1142.96,cat:"Celulares",parceiro:"Casas Bahia"},
+  {id:3,name:"Smartphone Motorola Moto g06 4G Tela 6.9\" 256GB Camera 50MP Verde",ean:"7892597355983",de:948.74,por:893.36,cat:"Celulares",parceiro:"Casas Bahia"},
+  {id:4,name:"Smartphone Motorola Moto g06 4G Tela 6.9\" 256GB Camera 50MP Bege",ean:"7892597451173",de:1009.36,por:893.36,cat:"Celulares",parceiro:"Casas Bahia"},
+  {id:5,name:"Smartphone Motorola Moto G06 4G Tela 6.9\" 128GB Camera 50MP Azul Marinho",ean:"7892597355969",de:829.72,por:778.96,cat:"Celulares",parceiro:"Casas Bahia"},
+  {id:6,name:"Smart TV Samsung 55\" 4K QLED QN55Q7FAAGXZD Controle por Gestos Xbox Cloud Gaming",ean:"7892509141482",de:3660.12,por:3160.61,cat:"TVs",parceiro:"Casas Bahia"},
+  {id:7,name:"Smart TV Samsung 50\" 4K QLED QN50Q7FAAGXZD Vision AI Xbox Cloud Gaming",ean:"7892509141567",de:3358.95,por:2765.41,cat:"TVs",parceiro:"Casas Bahia"},
+  {id:8,name:"Smart TV 55\" 4K Samsung 55U8600F Crystal HDR Tizen Alexa Xbox Gaming",ean:"7892509140836",de:3306.45,por:2696.25,cat:"TVs",parceiro:"Casas Bahia"},
+  {id:9,name:"Smart TV 43\" Samsung Full HD UN43F6000FGXZD Xbox Cloud Gaming HDR Wi-Fi Bluetooth",ean:"7892509138314",de:2060.80,por:1696.47,cat:"TVs",parceiro:"Casas Bahia"},
+  {id:10,name:"Smart TV 43\" FHD Semp S42 LED Dolby Audio Google TV",ean:"7899968302003",de:1783.95,por:1481.01,cat:"TVs",parceiro:"Casas Bahia"},
+  {id:11,name:"Smart TV 43\" FHD Philco P43KRA LED Roku TV HDR10 Dolby Audio",ean:"7891356125447",de:1999.00,por:1298.96,cat:"TVs",parceiro:"Casas Bahia"},
+  {id:12,name:"Smart TV 43\" LG Full HD 43LR6700 Processador a5 Alexa LG Channels webOS 23",ean:"7893299946530",de:2199.22,por:1696.47,cat:"TVs",parceiro:"Casas Bahia"},
+  {id:13,name:"Smart TV 40\" Hisense 40A4NV Full HD DLED DTS VirtualX Vidaa U9",ean:"7908842856218",de:1445.33,por:1185.50,cat:"TVs",parceiro:"Casas Bahia"},
+  {id:14,name:"Smart TV 40\" Full HD Philco P40CRA Roku TV HDR10 Dolby Audio",ean:"7891356128028",de:1499.00,por:1283.41,cat:"TVs",parceiro:"Casas Bahia"},
+  {id:15,name:"Smart TV 32\" LG HD 32LR600BPSA Processador a5 Alexa LG Channels WebOS 23",ean:"7893299955426",de:1402.92,por:1111.76,cat:"TVs",parceiro:"Casas Bahia"},
+  {id:16,name:"Smart TV 32\" HD Samsung H5000F Tizen HDR PurColor",ean:"7892509138291",de:1428.90,por:1061.11,cat:"TVs",parceiro:"Casas Bahia"},
+  {id:17,name:"Smart TV 32\" HD Philco P32CRB Roku TV HDR10 Dolby Audio",ean:"7891356127991",de:1133.00,por:862.16,cat:"TVs",parceiro:"Casas Bahia"},
+  {id:18,name:"Celular Samsung Galaxy A17 4G Tela 6.7\" 128GB Super AMOLED Camera Tripla 50MP Azul",ean:"7892509144940",de:1220.00,por:1070.16,cat:"Celulares",parceiro:"Casas Bahia"},
+];
+
+let results = products.map(p=>({...p,status:'Pendente',menor:null,media:null,diff:null,marketplace:null}));
+
+function fmtR(v){return v==null?'—':'R$'+Number(v).toFixed(2).replace('.',',')}
+function fmtD(d){if(d==null)return'—';return(d>0?'+':'')+Number(d).toFixed(1)+'%'}
+function dClass(d){if(d==null)return'';if(d<=3)return'diff-ok';if(d<=10)return'diff-warn';return'diff-bad'}
+function sBadge(s){
+  if(s==='Competitivo')return'<span class="badge badge-ok">Competitivo</span>';
+  if(s==='Atenção')return'<span class="badge badge-warn">Atenção</span>';
+  if(s==='Fora do mercado')return'<span class="badge badge-bad">Fora do mercado</span>';
+  return'<span class="badge badge-pending">Pendente</span>';
+}
+
+function renderTable(){
+  const fs=document.getElementById('filter-status').value;
+  const fc=document.getElementById('filter-cat').value;
+  const fq=document.getElementById('search').value.toLowerCase();
+  const filtered=results.filter(r=>{
+    if(fs&&r.status!==fs)return false;
+    if(fc&&r.cat!==fc)return false;
+    if(fq&&!r.name.toLowerCase().includes(fq))return false;
+    return true;
+  });
+  document.getElementById('table-body').innerHTML=filtered.length
+    ?filtered.map(r=>`<tr>
+      <td><div class="pname">${r.name}</div><div class="pmeta">${r.cat} · ${r.parceiro} · EAN: ${r.ean}</div></td>
+      <td class="price">${fmtR(r.de)}</td>
+      <td class="price">${fmtR(r.por)}</td>
+      <td class="price">${fmtR(r.menor)}</td>
+      <td class="price">${fmtR(r.media)}</td>
+      <td class="${dClass(r.diff)}">${fmtD(r.diff)}</td>
+      <td>${sBadge(r.status)}</td>
+      <td class="mkt-tag">${r.marketplace||'—'}</td>
+    </tr>`).join('')
+    :`<tr><td colspan="8"><div class="empty">Nenhum resultado.</div></td></tr>`;
+  updateMetrics();
+}
+
+function updateMetrics(){
+  const an=results.filter(r=>r.status!=='Pendente').length;
+  const ok=results.filter(r=>r.status==='Competitivo').length;
+  const warn=results.filter(r=>r.status==='Atenção').length;
+  const bad=results.filter(r=>r.status==='Fora do mercado').length;
+  document.getElementById('m-analyzed').textContent=an;
+  document.getElementById('m-ok').textContent=an>0?ok:'—';
+  document.getElementById('m-bad').textContent=an>0?bad:'—';
+  if(an>0){
+    document.getElementById('exec-section').style.display='block';
+    document.getElementById('exec-grid').innerHTML=`
+      <div class="exec-card"><div class="ev val-green">${ok}</div><div class="el">Competitivos</div></div>
+      <div class="exec-card"><div class="ev val-amber">${warn}</div><div class="el">Atenção</div></div>
+      <div class="exec-card"><div class="ev val-red">${bad}</div><div class="el">Fora do mercado</div></div>`;
+  }
+}
+
+function applyResults(){
+  const raw=document.getElementById('paste-area').value.trim();
+  const msg=document.getElementById('apply-msg');
+  if(!raw){msg.textContent='⚠ Cole o JSON antes de aplicar.';msg.style.color='var(--amber)';return;}
+  try{
+    const arr=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    let count=0;
+    arr.forEach(item=>{
+      const r=results.find(x=>x.id===item.id);
+      if(r){Object.assign(r,{menor:item.menor,media:item.media,marketplace:item.marketplace,status:item.status,diff:item.diff});count++;}
+    });
+    renderTable();
+    msg.style.color='var(--green)';
+    msg.textContent=`✓ ${count} produtos atualizados com sucesso.`;
+    document.getElementById('paste-area').value='';
+  }catch(e){
+    msg.style.color='var(--red)';
+    msg.textContent='✗ Erro ao ler JSON. Verifique se copiou o bloco completo.';
+  }
+}
+
+const PROMPT_TEMPLATE=`Você é um especialista em Marketplace e Pricing no e-commerce brasileiro.
+
+Analise os produtos abaixo e estime os preços praticados nos principais marketplaces (Mercado Livre, Amazon, Casas Bahia, Magalu, Shopee, Americanas). São TVs e Celulares — use seu conhecimento de treinamento para estimativas realistas.
+
+PRODUTOS (id | nome | EAN | Preço Bandshop | Categoria):
+${products.map(p=>`${p.id}|${p.name}|${p.ean}|R$${p.por.toFixed(2)}|${p.cat}`).join('\n')}
+
+Para cada produto, retorne um JSON array com objetos:
+{"id": <número>, "menor": <menor preço mercado float>, "media": <preço médio float>, "marketplace": "<marketplace com menor preço>", "status": "<Competitivo|Atenção|Fora do mercado>", "diff": <diferença % float, 1 casa decimal>}
+
+Regras de status: diff≤3% = Competitivo | 3%<diff≤10% = Atenção | diff>10% = Fora do mercado
+diff = ((preço Bandshop - menor mercado) / menor mercado) × 100
+
+Responda SOMENTE o JSON array, sem markdown, sem explicações.`;
+
+function copyPrompt(){
+  navigator.clipboard.writeText(PROMPT_TEMPLATE).then(()=>{
+    const btn=event.currentTarget;const orig=btn.innerHTML;
+    btn.innerHTML='✓ Copiado!';setTimeout(()=>{btn.innerHTML=orig;},2000);
+  });
+}
+
+function copyExecPrompt(){
+  const ok=results.filter(r=>r.status==='Competitivo').length;
+  const warn=results.filter(r=>r.status==='Atenção').length;
+  const bad=results.filter(r=>r.status==='Fora do mercado').length;
+  const top5=results.filter(r=>r.diff!=null).sort((a,b)=>b.diff-a.diff).slice(0,5);
+  const prompt=`Com base na análise de pricing da Bandshop (TVs e Celulares), gere uma análise executiva completa em português:
+
+DADOS GERAIS:
+- Total SKUs: ${results.length}
+- Competitivos (≤3%): ${ok} (${Math.round(ok/results.length*100)}%)
+- Atenção (3-10%): ${warn} (${Math.round(warn/results.length*100)}%)
+- Fora do mercado (>10%): ${bad} (${Math.round(bad/results.length*100)}%)
+
+TOP 5 PRODUTOS MAIS CAROS VS MERCADO:
+${top5.map(r=>`- ${r.name}: +${r.diff?.toFixed(1)}% (Bandshop R$${r.por.toFixed(2)} vs mercado R$${r.menor?.toFixed(2)})`).join('\n')}
+
+Inclua: resumo executivo, principais riscos comerciais, oportunidades, e 3-5 recomendações de ação imediata com prioridade.`;
+  navigator.clipboard.writeText(prompt).then(()=>{
+    const btn=event.currentTarget;const orig=btn.innerHTML;
+    btn.innerHTML='✓ Prompt copiado!';setTimeout(()=>{btn.innerHTML=orig;},2000);
+  });
+}
+
+renderTable();
+</script>
+</body>
+</html>
