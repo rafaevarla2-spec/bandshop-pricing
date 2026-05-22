@@ -8,182 +8,96 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0f0f0f;
-    --surface: #181818;
-    --surface2: #222222;
-    --border: #2a2a2a;
-    --border2: #333;
-    --text: #f0f0f0;
-    --muted: #888;
-    --hint: #555;
-    --green: #22c55e;
-    --green-bg: #0d2818;
-    --amber: #f59e0b;
-    --amber-bg: #231a07;
-    --red: #ef4444;
-    --red-bg: #1f0d0d;
-    --blue: #3b82f6;
-    --blue-bg: #0d1526;
-    --accent: #f0f0f0;
-    --mono: 'DM Mono', monospace;
-    --sans: 'DM Sans', sans-serif;
+    --bg:#0f0f0f;--surface:#181818;--surface2:#222;--border:#2a2a2a;--border2:#333;
+    --text:#f0f0f0;--muted:#888;--hint:#555;
+    --green:#22c55e;--green-bg:#0d2818;--amber:#f59e0b;--amber-bg:#231a07;
+    --red:#ef4444;--red-bg:#1f0d0d;--blue:#3b82f6;
+    --mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 14px; min-height: 100vh; }
-
-  /* Layout */
-  .shell { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
-  header { border-bottom: 1px solid var(--border); padding: 20px 0; display: flex; align-items: center; justify-content: space-between; }
-  .logo { font-family: var(--mono); font-size: 13px; color: var(--muted); letter-spacing: 0.08em; }
-  .logo span { color: var(--text); }
-  .badge-version { font-family: var(--mono); font-size: 10px; background: var(--surface2); border: 1px solid var(--border2); color: var(--muted); padding: 3px 8px; border-radius: 4px; }
-
-  main { padding: 32px 0 64px; }
-
-  /* How-to steps */
-  .howto { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin-bottom: 28px; display: flex; gap: 32px; align-items: flex-start; flex-wrap: wrap; }
-  .step-item { display: flex; align-items: flex-start; gap: 12px; flex: 1; min-width: 180px; }
-  .step-num { font-family: var(--mono); font-size: 11px; background: var(--surface2); border: 1px solid var(--border2); color: var(--muted); width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
-  .step-text { font-size: 13px; color: var(--muted); line-height: 1.5; }
-  .step-text strong { color: var(--text); font-weight: 500; }
-
-  /* Metrics row */
-  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 28px; }
-  .metric { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; }
-  .metric .label { font-size: 11px; font-family: var(--mono); color: var(--muted); letter-spacing: 0.06em; margin-bottom: 8px; text-transform: uppercase; }
-  .metric .val { font-size: 28px; font-weight: 600; line-height: 1; }
-  .metric .sub { font-size: 11px; color: var(--hint); margin-top: 4px; }
-  .val-green { color: var(--green); }
-  .val-amber { color: var(--amber); }
-  .val-red { color: var(--red); }
-
-  /* Controls */
-  .controls { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
-  select, input[type="text"] {
-    background: var(--surface); border: 1px solid var(--border2); color: var(--text);
-    font-family: var(--sans); font-size: 13px; padding: 0 12px; height: 38px;
-    border-radius: 8px; outline: none; transition: border 0.15s;
-  }
-  select:focus, input[type="text"]:focus { border-color: var(--blue); }
-  input[type="text"] { flex: 1; min-width: 200px; }
-
-  /* Buttons */
-  .btn { height: 38px; padding: 0 16px; border-radius: 8px; font-family: var(--sans); font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid var(--border2); background: var(--surface2); color: var(--text); transition: all 0.15s; display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; }
-  .btn:hover { border-color: var(--blue); color: var(--blue); }
-  .btn:active { opacity: 0.8; transform: scale(0.98); }
-  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-  .btn-primary { background: var(--text); color: var(--bg); border-color: var(--text); }
-  .btn-primary:hover { background: #ccc; border-color: #ccc; color: var(--bg); }
-
-  /* Table */
-  .table-wrap { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 12px; table-layout: fixed; min-width: 780px; }
-  th { background: var(--surface); padding: 10px 14px; text-align: left; font-size: 10px; font-family: var(--mono); color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; border-bottom: 1px solid var(--border); white-space: nowrap; font-weight: 400; }
-  td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: middle; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: var(--surface); }
-
-  .pname { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; }
-  .pmeta { font-size: 10px; color: var(--hint); margin-top: 2px; font-family: var(--mono); }
-  .price { font-family: var(--mono); font-size: 12px; white-space: nowrap; }
-  .diff-ok { color: var(--green); font-family: var(--mono); font-weight: 500; }
-  .diff-warn { color: var(--amber); font-family: var(--mono); font-weight: 500; }
-  .diff-bad { color: var(--red); font-family: var(--mono); font-weight: 500; }
-
-  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 20px; font-size: 10px; font-weight: 500; white-space: nowrap; }
-  .badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
-  .badge-ok { background: var(--green-bg); color: var(--green); border: 1px solid #1a4d30; }
-  .badge-ok::before { background: var(--green); }
-  .badge-warn { background: var(--amber-bg); color: var(--amber); border: 1px solid #4d3507; }
-  .badge-warn::before { background: var(--amber); }
-  .badge-bad { background: var(--red-bg); color: var(--red); border: 1px solid #4d1414; }
-  .badge-bad::before { background: var(--red); }
-  .badge-pending { background: var(--surface2); color: var(--muted); border: 1px solid var(--border2); }
-  .badge-pending::before { background: var(--hint); }
-  .mkt-tag { font-size: 10px; font-family: var(--mono); color: var(--muted); }
-
-  /* Paste area */
-  .paste-section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin-bottom: 28px; }
-  .paste-section h3 { font-size: 12px; font-family: var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
-  .paste-row { display: flex; gap: 10px; align-items: flex-start; }
-  textarea { flex: 1; background: var(--bg); border: 1px solid var(--border2); color: var(--text); font-family: var(--mono); font-size: 11px; padding: 10px 12px; border-radius: 8px; resize: vertical; min-height: 60px; outline: none; line-height: 1.5; }
-  textarea:focus { border-color: var(--blue); }
-  .apply-msg { font-size: 12px; color: var(--green); font-family: var(--mono); margin-top: 8px; min-height: 18px; }
-
-  /* Executive summary */
-  .exec-section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin-top: 28px; display: none; }
-  .exec-section h3 { font-size: 12px; font-family: var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
-  .exec-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
-  .exec-card { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; text-align: center; }
-  .exec-card .ev { font-size: 22px; font-weight: 600; font-family: var(--mono); }
-  .exec-card .el { font-size: 10px; color: var(--muted); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--mono); }
-
-  /* Empty state */
-  .empty { text-align: center; padding: 40px 20px; color: var(--hint); font-size: 13px; }
-  .empty svg { margin-bottom: 12px; opacity: 0.3; }
-
-  @media (max-width: 640px) {
-    .metrics { grid-template-columns: repeat(2, 1fr); }
-    .howto { flex-direction: column; gap: 16px; }
-    .exec-grid { grid-template-columns: repeat(2, 1fr); }
-  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;min-height:100vh}
+  .shell{max-width:1280px;margin:0 auto;padding:0 24px}
+  header{border-bottom:1px solid var(--border);padding:20px 0;display:flex;align-items:center;justify-content:space-between}
+  .logo{font-family:var(--mono);font-size:13px;color:var(--muted);letter-spacing:.08em}
+  .logo span{color:var(--text)}
+  .badge-version{font-family:var(--mono);font-size:10px;background:var(--surface2);border:1px solid var(--border2);color:var(--muted);padding:3px 8px;border-radius:4px}
+  main{padding:32px 0 64px}
+  .howto{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:28px;display:flex;gap:32px;flex-wrap:wrap}
+  .step-item{display:flex;align-items:flex-start;gap:12px;flex:1;min-width:180px}
+  .step-num{font-family:var(--mono);font-size:11px;background:var(--surface2);border:1px solid var(--border2);color:var(--muted);width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+  .step-text{font-size:13px;color:var(--muted);line-height:1.5}
+  .step-text strong{color:var(--text);font-weight:500}
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
+  .metric{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px}
+  .metric .label{font-size:11px;font-family:var(--mono);color:var(--muted);letter-spacing:.06em;margin-bottom:8px;text-transform:uppercase}
+  .metric .val{font-size:28px;font-weight:600;line-height:1}
+  .metric .sub{font-size:11px;color:var(--hint);margin-top:4px}
+  .val-green{color:var(--green)}.val-amber{color:var(--amber)}.val-red{color:var(--red)}
+  .controls{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+  select,input[type="text"]{background:var(--surface);border:1px solid var(--border2);color:var(--text);font-family:var(--sans);font-size:13px;padding:0 12px;height:38px;border-radius:8px;outline:none;transition:border .15s}
+  select:focus,input[type="text"]:focus{border-color:var(--blue)}
+  input[type="text"]{flex:1;min-width:200px}
+  .btn{height:38px;padding:0 16px;border-radius:8px;font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border2);background:var(--surface2);color:var(--text);transition:all .15s;display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+  .btn:hover{border-color:var(--blue);color:var(--blue)}
+  .btn:active{opacity:.8;transform:scale(.98)}
+  .btn-primary{background:var(--text);color:var(--bg);border-color:var(--text)}
+  .btn-primary:hover{background:#ccc;border-color:#ccc;color:var(--bg)}
+  .table-wrap{border:1px solid var(--border);border-radius:12px;overflow:hidden;overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed;min-width:780px}
+  th{background:var(--surface);padding:10px 14px;text-align:left;font-size:10px;font-family:var(--mono);color:var(--muted);letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--border);white-space:nowrap;font-weight:400}
+  td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:var(--surface)}
+  .pname{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.4}
+  .pmeta{font-size:10px;color:var(--hint);margin-top:2px;font-family:var(--mono)}
+  .price{font-family:var(--mono);font-size:12px;white-space:nowrap}
+  .diff-ok{color:var(--green);font-family:var(--mono);font-weight:500}
+  .diff-warn{color:var(--amber);font-family:var(--mono);font-weight:500}
+  .diff-bad{color:var(--red);font-family:var(--mono);font-weight:500}
+  .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:500;white-space:nowrap}
+  .badge::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0}
+  .badge-ok{background:var(--green-bg);color:var(--green);border:1px solid #1a4d30}.badge-ok::before{background:var(--green)}
+  .badge-warn{background:var(--amber-bg);color:var(--amber);border:1px solid #4d3507}.badge-warn::before{background:var(--amber)}
+  .badge-bad{background:var(--red-bg);color:var(--red);border:1px solid #4d1414}.badge-bad::before{background:var(--red)}
+  .badge-pending{background:var(--surface2);color:var(--muted);border:1px solid var(--border2)}.badge-pending::before{background:var(--hint)}
+  .mkt-tag{font-size:10px;font-family:var(--mono);color:var(--muted)}
+  .paste-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-top:20px}
+  .paste-section h3{font-size:12px;font-family:var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+  .paste-row{display:flex;gap:10px;align-items:flex-start}
+  textarea{flex:1;background:var(--bg);border:1px solid var(--border2);color:var(--text);font-family:var(--mono);font-size:11px;padding:10px 12px;border-radius:8px;resize:vertical;min-height:60px;outline:none;line-height:1.5}
+  textarea:focus{border-color:var(--blue)}
+  .apply-msg{font-size:12px;font-family:var(--mono);margin-top:8px;min-height:18px}
+  .exec-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-top:28px;display:none}
+  .exec-section h3{font-size:12px;font-family:var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px}
+  .exec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+  .exec-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px;text-align:center}
+  .exec-card .ev{font-size:22px;font-weight:600;font-family:var(--mono)}
+  .exec-card .el{font-size:10px;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.05em;font-family:var(--mono)}
+  .empty{text-align:center;padding:40px 20px;color:var(--hint);font-size:13px}
+  @media(max-width:640px){.metrics{grid-template-columns:repeat(2,1fr)}.exec-grid{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
-
 <div class="shell">
   <header>
     <div class="logo">bandshop · <span>pricing intelligence</span></div>
-    <div class="badge-version">v1.0 · mai/2025</div>
+    <div class="badge-version">TVs & Celulares · 20-22/05</div>
   </header>
-
   <main>
-
-    <!-- How-to -->
     <div class="howto">
-      <div class="step-item">
-        <div class="step-num">1</div>
-        <div class="step-text"><strong>Abra o Claude</strong> em claude.ai com a planilha de ofertas da semana</div>
-      </div>
-      <div class="step-item">
-        <div class="step-num">2</div>
-        <div class="step-text"><strong>Clique em "Gerar prompt"</strong> e envie para o Claude analisar os preços</div>
-      </div>
-      <div class="step-item">
-        <div class="step-num">3</div>
-        <div class="step-text"><strong>Copie o JSON</strong> retornado pelo Claude e cole na área abaixo</div>
-      </div>
-      <div class="step-item">
-        <div class="step-num">4</div>
-        <div class="step-text"><strong>Clique em "Aplicar"</strong> para preencher a tabela e ver o diagnóstico</div>
-      </div>
+      <div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>Clique em "Gerar prompt"</strong> e envie para o Claude no claude.ai</div></div>
+      <div class="step-item"><div class="step-num">2</div><div class="step-text"><strong>Copie o JSON</strong> retornado pelo Claude no chat</div></div>
+      <div class="step-item"><div class="step-num">3</div><div class="step-text"><strong>Cole abaixo</strong> e clique em "Aplicar" para preencher a tabela</div></div>
+      <div class="step-item"><div class="step-num">4</div><div class="step-text"><strong>Gere a análise executiva</strong> com um clique após os dados carregarem</div></div>
     </div>
 
-    <!-- Metrics -->
     <div class="metrics">
-      <div class="metric">
-        <div class="label">Total SKUs</div>
-        <div class="val" id="m-total">84</div>
-        <div class="sub">planilha carregada</div>
-      </div>
-      <div class="metric">
-        <div class="label">Analisados</div>
-        <div class="val" id="m-analyzed">0</div>
-        <div class="sub">com dados de mercado</div>
-      </div>
-      <div class="metric">
-        <div class="label">Competitivos</div>
-        <div class="val val-green" id="m-ok">—</div>
-        <div class="sub">≤3% acima do menor</div>
-      </div>
-      <div class="metric">
-        <div class="label">Fora do mercado</div>
-        <div class="val val-red" id="m-bad">—</div>
-        <div class="sub">>10% acima do menor</div>
-      </div>
+      <div class="metric"><div class="label">Total SKUs</div><div class="val" id="m-total">19</div><div class="sub">planilha carregada</div></div>
+      <div class="metric"><div class="label">Analisados</div><div class="val" id="m-analyzed">0</div><div class="sub">com dados de mercado</div></div>
+      <div class="metric"><div class="label">Competitivos</div><div class="val val-green" id="m-ok">—</div><div class="sub">≤3% acima do menor</div></div>
+      <div class="metric"><div class="label">Fora do mercado</div><div class="val val-red" id="m-bad">—</div><div class="sub">>10% acima do menor</div></div>
     </div>
 
-    <!-- Controls -->
     <div class="controls">
       <select id="filter-status" onchange="renderTable()">
         <option value="">Todos os status</option>
@@ -194,32 +108,32 @@
       </select>
       <select id="filter-cat" onchange="renderTable()">
         <option value="">Todas as categorias</option>
+        <option value="TVs">TVs</option>
+        <option value="Celulares">Celulares</option>
       </select>
       <input type="text" id="search" placeholder="Buscar produto..." oninput="renderTable()" />
       <button class="btn btn-primary" onclick="copyPrompt()">⬡ Gerar prompt para o Claude</button>
     </div>
 
-    <!-- Table -->
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
-            <th style="width:26%">Produto</th>
+            <th style="width:28%">Produto</th>
             <th style="width:9%">Preço DE</th>
             <th style="width:9%">Preço POR</th>
             <th style="width:10%">Menor concorr.</th>
             <th style="width:10%">Preço médio</th>
             <th style="width:8%">Diferença</th>
-            <th style="width:14%">Status</th>
-            <th style="width:14%">Marketplace</th>
+            <th style="width:13%">Status</th>
+            <th style="width:13%">Marketplace</th>
           </tr>
         </thead>
         <tbody id="table-body"></tbody>
       </table>
     </div>
 
-    <!-- Paste area -->
-    <div class="paste-section" style="margin-top:20px">
+    <div class="paste-section">
       <h3>Colar resultado do Claude</h3>
       <div class="paste-row">
         <textarea id="paste-area" placeholder='Cole aqui o JSON retornado pelo Claude (o array [...] completo)...'></textarea>
@@ -228,110 +142,38 @@
       <div class="apply-msg" id="apply-msg"></div>
     </div>
 
-    <!-- Executive summary -->
     <div class="exec-section" id="exec-section">
       <h3>Resumo executivo</h3>
       <div class="exec-grid" id="exec-grid"></div>
       <button class="btn" onclick="copyExecPrompt()">⬡ Gerar análise executiva completa no Claude</button>
     </div>
-
   </main>
 </div>
 
 <script>
 const products = [
-  {id:0,name:"Conjunto 6 Panelas Indução Granito Chef Taupe",ean:"7908122226052",de:836,por:523.59,cat:"Utensílios",parceiro:"Wolff"},
-  {id:1,name:"Frigideira Lyor Cerâmica Granilite Bege 24cm",ean:"7899768052160",de:115,por:73.09,cat:"Utensílios",parceiro:"Wolff"},
-  {id:2,name:"Frigideira Lyor Granito Chef Bege 28cm",ean:"7899768052207",de:160,por:102.95,cat:"Utensílios",parceiro:"Wolff"},
-  {id:3,name:"6 Xícaras para Chá Wolff Paddy Porcelana 200ml",ean:"7895730180565",de:557,por:319.59,cat:"Utensílios",parceiro:"Wolff"},
-  {id:4,name:"Balança Digital Corporal 28cm Cinza Diatomita",ean:"7908122225574",de:205,por:111.34,cat:"Casa",parceiro:"Wolff"},
-  {id:5,name:"Prato Raso Wolff Dubai Preto Dourado 25,5cm",ean:"7895730180640",de:179,por:105.39,cat:"Utensílios",parceiro:"Wolff"},
-  {id:6,name:"212 VIP Black Elixir Carolina Herrera EDP 100ml",ean:"8411061105016",de:829.26,por:638.9,cat:"Perfumaria",parceiro:"Tudo de Perfumes"},
-  {id:7,name:"Asad Bourbon Lattafa EDP Masc 100ml",ean:"6290362340362",de:389,por:309.9,cat:"Perfumaria",parceiro:"Tudo de Perfumes"},
-  {id:8,name:"1 Million Paco Rabanne EDT Masc 100ml",ean:"3349668566792",de:849,por:624.9,cat:"Perfumaria",parceiro:"Tudo de Perfumes"},
-  {id:9,name:"Polo Blue Ralph Lauren EDP Masc 125ml",ean:"3605970859251",de:785.07,por:604.9,cat:"Perfumaria",parceiro:"Tudo de Perfumes"},
-  {id:10,name:"We Are Tribe Intense Benetton EDP Masc 90ml",ean:"8433982026218",de:259,por:159,cat:"Perfumaria",parceiro:"Época"},
-  {id:11,name:"Multi-Styler GCX623 Sport USB Gama Italy",ean:"7898496354447",de:179.9,por:129.9,cat:"Beleza",parceiro:"Gama Italy"},
-  {id:12,name:"Benetton Black Intenso EDP Masc 200ml",ean:"3137370361343",de:329,por:196,cat:"Perfumaria",parceiro:"Época"},
-  {id:13,name:"Escova Secadora Lichia 3D Bivolt Gama Italy",ean:"7898496357646",de:279.9,por:159.9,cat:"Beleza",parceiro:"Gama Italy"},
-  {id:14,name:"Secador Gold Ion 2200W 127V Gama Italy",ean:"7898496356915",de:299.9,por:199.9,cat:"Beleza",parceiro:"Gama Italy"},
-  {id:15,name:"Barbeador Barber Series Absolute Shaver Bivolt",ean:"7898496353204",de:399.9,por:249.9,cat:"Beleza",parceiro:"Gama Italy"},
-  {id:16,name:"Secador Gold Ion 2200W 220V Gama Italy",ean:"7898496356922",de:299.9,por:199.9,cat:"Beleza",parceiro:"Gama Italy"},
-  {id:17,name:"Banderas Icon Splendid EDP Fem 50ml",ean:"8433982024283",de:249,por:153,cat:"Perfumaria",parceiro:"Época"},
-  {id:18,name:"Sanduicheira Grill Britânia BGR27I 850W 127V",ean:"7891356103537",de:129.9,por:119.9,cat:"Eletrodomésticos",parceiro:"Webcontinental"},
-  {id:19,name:"Sanduicheira Grill Britânia BGR27I 850W 220V",ean:"7891356103544",de:129.9,por:119.9,cat:"Eletrodomésticos",parceiro:"Webcontinental"},
-  {id:20,name:"Tanqueray London Dry Gin 750ml",ean:"5000291020706",de:129.9,por:116.9,cat:"Bebidas",parceiro:"Diageo"},
-  {id:21,name:"Rabanne Invictus Victory Elixir Parfum 200ml",ean:"8411061084946",de:1229,por:969,cat:"Perfumaria",parceiro:"Época"},
-  {id:22,name:"Johnnie Walker Gold Label Reserve 750ml",ean:"5000267197630",de:282.9,por:259.9,cat:"Bebidas",parceiro:"Diageo"},
-  {id:23,name:"Old Parr 12 Years 1L",ean:"5000281004020",de:164.9,por:139.9,cat:"Bebidas",parceiro:"Diageo"},
-  {id:24,name:"Gordon's Dry Gin 750ml",ean:"5000289020701",de:79.9,por:71.9,cat:"Bebidas",parceiro:"Diageo"},
-  {id:25,name:"Marques de Casa Concha Cabernet Sauv 750ml",ean:"7804320333175",de:169,por:119.9,cat:"Bebidas",parceiro:"Concha Y Toro"},
-  {id:26,name:"Cîroc Vodka 750ml",ean:"5010103937009",de:209.9,por:188.9,cat:"Bebidas",parceiro:"Diageo"},
-  {id:27,name:"Ketel One Vodka 1L",ean:"85156210015",de:134.9,por:120.9,cat:"Bebidas",parceiro:"Diageo"},
-  {id:28,name:"Johnnie Walker Double Black 1L",ean:"5000267112077",de:232.9,por:197.9,cat:"Bebidas",parceiro:"Diageo"},
-  {id:29,name:"Trivento Reserve Malbec 750ml",ean:"7798039590342",de:73.9,por:65.9,cat:"Bebidas",parceiro:"Concha Y Toro"},
-  {id:30,name:"Diablo Velvet Merlot 750ml",ean:"7804320761718",de:93.9,por:75.9,cat:"Bebidas",parceiro:"Concha Y Toro"},
-  {id:31,name:"Marques de Casa Concha Carmenere 750ml",ean:"7804320365039",de:169,por:119.9,cat:"Bebidas",parceiro:"Concha Y Toro"},
-  {id:32,name:"Marques de Casa Concha Merlot 750ml",ean:"7804320253480",de:169,por:119.9,cat:"Bebidas",parceiro:"Concha Y Toro"},
-  {id:33,name:"Funko Pop! Naruto Uzumaki Shuriken",ean:"7900126118999",de:179.99,por:149.99,cat:"Brinquedos",parceiro:"Candide"},
-  {id:34,name:"iChef Ultra Sauté Petit 20cm Azul Polishop",ean:"7909484044667",de:299.88,por:191.01,cat:"Utensílios",parceiro:"Polishop"},
-  {id:35,name:"iChef Ultra Sauté Petit 20cm Vermelho Polishop",ean:"7909484044759",de:299.88,por:191.01,cat:"Utensílios",parceiro:"Polishop"},
-  {id:36,name:"Olympéa Paco Rabanne EDP Fem 30ml",ean:"3349668589678",de:499,por:399.2,cat:"Perfumaria",parceiro:"Época"},
-  {id:37,name:"Funko Pop! Pernalonga de Fantasma",ean:"7900126118685",de:149.99,por:79.99,cat:"Brinquedos",parceiro:"Candide"},
-  {id:38,name:"S By Shakira EDT Fem 50ml",ean:"8411061697290",de:159,por:85,cat:"Perfumaria",parceiro:"Época"},
-  {id:39,name:"Funko Pop! Majin Vegeta Dragon Ball Z",ean:"7900126123184",de:179.99,por:149.99,cat:"Brinquedos",parceiro:"Candide"},
-  {id:40,name:"Be Emotion Modelador Multi Styler 127V",ean:"7909484054437",de:2399.9,por:1117.91,cat:"Beleza",parceiro:"Polishop"},
-  {id:41,name:"Espumante La Vie en Or Kur Sem Álcool 750ml",ean:"7898450000000",de:97.9,por:53.85,cat:"Bebidas",parceiro:"Kur"},
-  {id:42,name:"Be Emotion Modelador Multi Styler 220V",ean:"7909484054444",de:2399.9,por:1117.91,cat:"Beleza",parceiro:"Polishop"},
-  {id:43,name:"The Golden Secret Antonio Banderas EDT 100ml",ean:"8411061080764",de:249,por:189,cat:"Perfumaria",parceiro:"Época"},
-  {id:44,name:"Funko Pop! Hello Kitty Sanrio Sorvetes",ean:"7900126119965",de:179.99,por:149.99,cat:"Brinquedos",parceiro:"Candide"},
-  {id:45,name:"Funko Pop! Sonic e Chao",ean:"7900126118432",de:179.99,por:149.99,cat:"Brinquedos",parceiro:"Candide"},
-  {id:46,name:"Nina Illusion Nina Ricci EDP Fem 30ml",ean:"3349668613427",de:399,por:319.2,cat:"Perfumaria",parceiro:"Época"},
-  {id:47,name:"Funko Pop! Michelangelo Tartarugas Ninja",ean:"7900126112973",de:149.99,por:99.99,cat:"Brinquedos",parceiro:"Candide"},
-  {id:48,name:"Le Male Le Parfum Jean Paul Gaultier EDP 125ml",ean:"3349668614530",de:839,por:671.2,cat:"Perfumaria",parceiro:"Época"},
-  {id:49,name:"Funko Pop! Edwiges Harry Potter",ean:"7900126120244",de:179.99,por:149.99,cat:"Brinquedos",parceiro:"Candide"},
-  {id:50,name:"Polishop Ferro a Vapor Easy e Care 127V",ean:"7909484056318",de:999.9,por:764.35,cat:"Eletrodomésticos",parceiro:"Polishop"},
-  {id:51,name:"Ventilador Mesa 40cm Multi Turbo 40 220V",ean:"7908410000000",de:209.9,por:179.9,cat:"Eletrodomésticos",parceiro:"Multi"},
-  {id:52,name:"Funko Pop! Mickey Roupa de Corrida Disney",ean:"7900126119767",de:179.99,por:149.99,cat:"Brinquedos",parceiro:"Candide"},
-  {id:53,name:"Invictus Paco Rabanne EDT Masc 200ml",ean:"8435415032315",de:1029,por:823.2,cat:"Perfumaria",parceiro:"Época"},
-  {id:54,name:"Love Story Chloé EDP Fem 50ml",ean:"3607342635838",de:793.7,por:579.9,cat:"Perfumaria",parceiro:"Época"},
-  {id:55,name:"Espumante La Vie en Rose Kur Sem Álcool 750ml",ean:"7898450000000",de:97.9,por:53.85,cat:"Bebidas",parceiro:"Kur"},
-  {id:56,name:"Funko Pop! Gengar Pokémon",ean:"7900126119101",de:179.99,por:149.99,cat:"Brinquedos",parceiro:"Candide"},
-  {id:57,name:"Funko Pop! Coelho Ursinho Pooh Disney",ean:"7900126118425",de:149.99,por:79.99,cat:"Brinquedos",parceiro:"Candide"},
-  {id:58,name:"Gloss Labial 5G KurMyHomeSpa",ean:"7898450000000",de:196.9,por:137.83,cat:"Beleza",parceiro:"Kur"},
-  {id:59,name:"Pelúcia Harry Potter 20cm Harry",ean:"7900126371004",de:99.99,por:79.99,cat:"Brinquedos",parceiro:"Candide"},
-  {id:60,name:"Pelúcia Harry Potter 20cm Hermione",ean:"7900126371035",de:99.99,por:79.99,cat:"Brinquedos",parceiro:"Candide"},
-  {id:61,name:"Smirnoff No.21 Red Vodka 1.75L",ean:"7893218003634",de:62.9,por:56.9,cat:"Bebidas",parceiro:"Diageo"},
-  {id:62,name:"Baileys Original 750ml",ean:"5011013100132",de:164.9,por:147.9,cat:"Bebidas",parceiro:"Diageo"},
-  {id:63,name:"Escova Secadora Philco 3 acessórios 1300W Bivolt",ean:"7891356106859",de:159.9,por:139.9,cat:"Beleza",parceiro:"Webcontinental"},
-  {id:64,name:"Liquidificador Philco 1500W 3,1L 127V",ean:"7891356122880",de:159.9,por:149.9,cat:"Eletrodomésticos",parceiro:"Webcontinental"},
-  {id:65,name:"Ventilador Mesa 40cm Multi Turbo 40 127V",ean:"7908410000000",de:209.9,por:179.9,cat:"Eletrodomésticos",parceiro:"Multi"},
-  {id:66,name:"Liquidificador Philco 1500W 3,1L 220V",ean:"7891356122897",de:159.9,por:149.9,cat:"Eletrodomésticos",parceiro:"Webcontinental"},
-  {id:67,name:"Mixer Britânia Turbo 3em1 500W 127V",ean:"7891356087486",de:159.9,por:149.9,cat:"Eletrodomésticos",parceiro:"Webcontinental"},
-  {id:68,name:"Mixer Britânia Turbo 3em1 500W 220V",ean:"7891356087493",de:159.9,por:149.9,cat:"Eletrodomésticos",parceiro:"Webcontinental"},
-  {id:69,name:"Panificadora Britânia Multipane 12 Prog 127V",ean:"7891356046858",de:564.9,por:549.9,cat:"Eletrodomésticos",parceiro:"Webcontinental"},
-  {id:70,name:"Panificadora Britânia Multipane 12 Prog 220V",ean:"7891356046872",de:564.9,por:549.9,cat:"Eletrodomésticos",parceiro:"Webcontinental"},
-  {id:71,name:"Pipoqueira Britânia Pop Time 127V",ean:"7891356002656",de:149.9,por:139.9,cat:"Eletrodomésticos",parceiro:"Webcontinental"},
-  {id:72,name:"Pipoqueira Britânia Pop Time 220V",ean:"7891356002670",de:149.9,por:139.9,cat:"Eletrodomésticos",parceiro:"Webcontinental"},
-  {id:73,name:"Planner Harry Potter Vira Tempo Imaginarium",ean:"7898458229509",de:199.9,por:119.9,cat:"Brinquedos",parceiro:"Imaginarium"},
-  {id:74,name:"Eros De Gianni Versace EDT Masc 100ml",ean:"sem EAN",de:803.88,por:670.9,cat:"Perfumaria",parceiro:"Tudo de Perfumes"},
-  {id:75,name:"Kit Capilar KurMyHomeSpa",ean:"sem EAN",de:253,por:177.1,cat:"Beleza",parceiro:"Kur"},
-  {id:76,name:"Ferro Passar Roupa Easyglide 127V Multi HO700",ean:"7908840000000",de:79.9,por:59.9,cat:"Eletrodomésticos",parceiro:"Multi"},
-  {id:77,name:"Ferro Passar Roupa Easyglide 220V Multi HO701",ean:"7908840000000",de:79.9,por:59.9,cat:"Eletrodomésticos",parceiro:"Multi"},
-  {id:78,name:"Mixer Duo Turbo 3em1 127V 200W Multi GO019",ean:"7908840000000",de:159.9,por:129.9,cat:"Eletrodomésticos",parceiro:"Multi"},
-  {id:79,name:"Mixer Duo Turbo 3em1 220V 200W Multi GO020",ean:"7908840000000",de:159.9,por:129.9,cat:"Eletrodomésticos",parceiro:"Multi"},
-  {id:80,name:"Secador Cabelo 3 Temp 1900W 127V Multi EB173",ean:"7908690000000",de:139.9,por:119.9,cat:"Beleza",parceiro:"Multi"},
-  {id:81,name:"Vip Men Black Carolina Herrera Body Spray 250ml",ean:"8411061945858",de:279,por:189,cat:"Perfumaria",parceiro:"Época"},
-  {id:82,name:"Vip Rosé Carolina Herrera Body Spray 250ml",ean:"8411061023167",de:279,por:189,cat:"Perfumaria",parceiro:"Época"},
-  {id:83,name:"Lola Cosmetics Danos Vorazes Kit Capilar",ean:"2500000826153",de:184.6,por:105,cat:"Beleza",parceiro:"Época"},
+  {id:0,name:"Smartphone Xiaomi Redmi 14C BR 4G Azul 256GB 4+4GB RAM Tela 6.8 MediaTek Helio G81 Ultra Camera 50MP",ean:"7908426309949",de:1414.53,por:1283.26,cat:"Celulares",parceiro:"Casas Bahia"},
+  {id:1,name:"Smartphone Samsung Galaxy A26 Tela 6.7\" 256GB 5G Camera Tripla 50MP Verde",ean:"7892509143387",de:1898.89,por:1766.96,cat:"Celulares",parceiro:"Casas Bahia"},
+  {id:2,name:"Smartphone Motorola Moto g35 5G Coral 256GB 4GB RAM Camera 50MP NFC Tela 6.7\"",ean:"7892597354382",de:1399.00,por:1142.96,cat:"Celulares",parceiro:"Casas Bahia"},
+  {id:3,name:"Smartphone Motorola Moto g06 4G Tela 6.9\" 256GB Camera 50MP Verde",ean:"7892597355983",de:948.74,por:893.36,cat:"Celulares",parceiro:"Casas Bahia"},
+  {id:4,name:"Smartphone Motorola Moto g06 4G Tela 6.9\" 256GB Camera 50MP Bege",ean:"7892597451173",de:1009.36,por:893.36,cat:"Celulares",parceiro:"Casas Bahia"},
+  {id:5,name:"Smartphone Motorola Moto G06 4G Tela 6.9\" 128GB Camera 50MP Azul Marinho",ean:"7892597355969",de:829.72,por:778.96,cat:"Celulares",parceiro:"Casas Bahia"},
+  {id:6,name:"Smart TV Samsung 55\" 4K QLED QN55Q7FAAGXZD Controle por Gestos Xbox Cloud Gaming",ean:"7892509141482",de:3660.12,por:3160.61,cat:"TVs",parceiro:"Casas Bahia"},
+  {id:7,name:"Smart TV Samsung 50\" 4K QLED QN50Q7FAAGXZD Vision AI Xbox Cloud Gaming",ean:"7892509141567",de:3358.95,por:2765.41,cat:"TVs",parceiro:"Casas Bahia"},
+  {id:8,name:"Smart TV 55\" 4K Samsung 55U8600F Crystal HDR Tizen Alexa Xbox Gaming",ean:"7892509140836",de:3306.45,por:2696.25,cat:"TVs",parceiro:"Casas Bahia"},
+  {id:9,name:"Smart TV 43\" Samsung Full HD UN43F6000FGXZD Xbox Cloud Gaming HDR Wi-Fi Bluetooth",ean:"7892509138314",de:2060.80,por:1696.47,cat:"TVs",parceiro:"Casas Bahia"},
+  {id:10,name:"Smart TV 43\" FHD Semp S42 LED Dolby Audio Google TV",ean:"7899968302003",de:1783.95,por:1481.01,cat:"TVs",parceiro:"Casas Bahia"},
+  {id:11,name:"Smart TV 43\" FHD Philco P43KRA LED Roku TV HDR10 Dolby Audio",ean:"7891356125447",de:1999.00,por:1298.96,cat:"TVs",parceiro:"Casas Bahia"},
+  {id:12,name:"Smart TV 43\" LG Full HD 43LR6700 Processador a5 Alexa LG Channels webOS 23",ean:"7893299946530",de:2199.22,por:1696.47,cat:"TVs",parceiro:"Casas Bahia"},
+  {id:13,name:"Smart TV 40\" Hisense 40A4NV Full HD DLED DTS VirtualX Vidaa U9",ean:"7908842856218",de:1445.33,por:1185.50,cat:"TVs",parceiro:"Casas Bahia"},
+  {id:14,name:"Smart TV 40\" Full HD Philco P40CRA Roku TV HDR10 Dolby Audio",ean:"7891356128028",de:1499.00,por:1283.41,cat:"TVs",parceiro:"Casas Bahia"},
+  {id:15,name:"Smart TV 32\" LG HD 32LR600BPSA Processador a5 Alexa LG Channels WebOS 23",ean:"7893299955426",de:1402.92,por:1111.76,cat:"TVs",parceiro:"Casas Bahia"},
+  {id:16,name:"Smart TV 32\" HD Samsung H5000F Tizen HDR PurColor",ean:"7892509138291",de:1428.90,por:1061.11,cat:"TVs",parceiro:"Casas Bahia"},
+  {id:17,name:"Smart TV 32\" HD Philco P32CRB Roku TV HDR10 Dolby Audio",ean:"7891356127991",de:1133.00,por:862.16,cat:"TVs",parceiro:"Casas Bahia"},
+  {id:18,name:"Celular Samsung Galaxy A17 4G Tela 6.7\" 128GB Super AMOLED Camera Tripla 50MP Azul",ean:"7892509144940",de:1220.00,por:1070.16,cat:"Celulares",parceiro:"Casas Bahia"},
 ];
 
 let results = products.map(p=>({...p,status:'Pendente',menor:null,media:null,diff:null,marketplace:null}));
-
-// populate category filter
-const cats=[...new Set(products.map(p=>p.cat))].sort();
-const catSel=document.getElementById('filter-cat');
-cats.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;catSel.appendChild(o);});
 
 function fmtR(v){return v==null?'—':'R$'+Number(v).toFixed(2).replace('.',',')}
 function fmtD(d){if(d==null)return'—';return(d>0?'+':'')+Number(d).toFixed(1)+'%'}
@@ -353,10 +195,9 @@ function renderTable(){
     if(fq&&!r.name.toLowerCase().includes(fq))return false;
     return true;
   });
-  const tb=document.getElementById('table-body');
-  tb.innerHTML=filtered.length?filtered.map(r=>`
-    <tr>
-      <td><div class="pname">${r.name}</div><div class="pmeta">${r.cat} · ${r.parceiro}</div></td>
+  document.getElementById('table-body').innerHTML=filtered.length
+    ?filtered.map(r=>`<tr>
+      <td><div class="pname">${r.name}</div><div class="pmeta">${r.cat} · ${r.parceiro} · EAN: ${r.ean}</div></td>
       <td class="price">${fmtR(r.de)}</td>
       <td class="price">${fmtR(r.por)}</td>
       <td class="price">${fmtR(r.menor)}</td>
@@ -365,7 +206,7 @@ function renderTable(){
       <td>${sBadge(r.status)}</td>
       <td class="mkt-tag">${r.marketplace||'—'}</td>
     </tr>`).join('')
-    :`<tr><td colspan="8"><div class="empty"><svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><br>Nenhum resultado.</div></td></tr>`;
+    :`<tr><td colspan="8"><div class="empty">Nenhum resultado.</div></td></tr>`;
   updateMetrics();
 }
 
@@ -378,8 +219,7 @@ function updateMetrics(){
   document.getElementById('m-ok').textContent=an>0?ok:'—';
   document.getElementById('m-bad').textContent=an>0?bad:'—';
   if(an>0){
-    const es=document.getElementById('exec-section');
-    es.style.display='block';
+    document.getElementById('exec-section').style.display='block';
     document.getElementById('exec-grid').innerHTML=`
       <div class="exec-card"><div class="ev val-green">${ok}</div><div class="el">Competitivos</div></div>
       <div class="exec-card"><div class="ev val-amber">${warn}</div><div class="el">Atenção</div></div>
@@ -408,9 +248,9 @@ function applyResults(){
   }
 }
 
-const PROMPT_TEMPLATE = `Você é um especialista em Marketplace e Pricing no e-commerce brasileiro.
+const PROMPT_TEMPLATE=`Você é um especialista em Marketplace e Pricing no e-commerce brasileiro.
 
-Analise os produtos abaixo e estime os preços praticados nos principais marketplaces (Mercado Livre, Amazon, Casas Bahia, Magalu, Shopee, Americanas).
+Analise os produtos abaixo e estime os preços praticados nos principais marketplaces (Mercado Livre, Amazon, Casas Bahia, Magalu, Shopee, Americanas). São TVs e Celulares — use seu conhecimento de treinamento para estimativas realistas.
 
 PRODUTOS (id | nome | EAN | Preço Bandshop | Categoria):
 ${products.map(p=>`${p.id}|${p.name}|${p.ean}|R$${p.por.toFixed(2)}|${p.cat}`).join('\n')}
@@ -425,10 +265,8 @@ Responda SOMENTE o JSON array, sem markdown, sem explicações.`;
 
 function copyPrompt(){
   navigator.clipboard.writeText(PROMPT_TEMPLATE).then(()=>{
-    const btn=event.currentTarget;
-    const orig=btn.innerHTML;
-    btn.innerHTML='✓ Copiado!';
-    setTimeout(()=>{btn.innerHTML=orig;},2000);
+    const btn=event.currentTarget;const orig=btn.innerHTML;
+    btn.innerHTML='✓ Copiado!';setTimeout(()=>{btn.innerHTML=orig;},2000);
   });
 }
 
@@ -437,7 +275,7 @@ function copyExecPrompt(){
   const warn=results.filter(r=>r.status==='Atenção').length;
   const bad=results.filter(r=>r.status==='Fora do mercado').length;
   const top5=results.filter(r=>r.diff!=null).sort((a,b)=>b.diff-a.diff).slice(0,5);
-  const prompt=`Com base na análise de pricing da Bandshop, gere uma análise executiva completa em português:
+  const prompt=`Com base na análise de pricing da Bandshop (TVs e Celulares), gere uma análise executiva completa em português:
 
 DADOS GERAIS:
 - Total SKUs: ${results.length}
@@ -450,14 +288,11 @@ ${top5.map(r=>`- ${r.name}: +${r.diff?.toFixed(1)}% (Bandshop R$${r.por.toFixed(
 
 Inclua: resumo executivo, principais riscos comerciais, oportunidades, e 3-5 recomendações de ação imediata com prioridade.`;
   navigator.clipboard.writeText(prompt).then(()=>{
-    const btn=event.currentTarget;
-    const orig=btn.innerHTML;
-    btn.innerHTML='✓ Prompt copiado!';
-    setTimeout(()=>{btn.innerHTML=orig;},2000);
+    const btn=event.currentTarget;const orig=btn.innerHTML;
+    btn.innerHTML='✓ Prompt copiado!';setTimeout(()=>{btn.innerHTML=orig;},2000);
   });
 }
 
-document.getElementById('m-total').textContent=products.length;
 renderTable();
 </script>
 </body>
