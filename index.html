@@ -81,7 +81,7 @@
 <div class="shell">
   <header>
     <div class="logo">bandshop · <span>pricing intelligence</span></div>
-    <div class="badge-version">TVs & Celulares · 20-22/05</div>
+    <div class="badge-version">TVs & Soundbars · 30/09</div>
   </header>
   <main>
     <div class="howto">
@@ -109,7 +109,7 @@
       <select id="filter-cat" onchange="renderTable()">
         <option value="">Todas as categorias</option>
         <option value="TVs">TVs</option>
-        <option value="Celulares">Celulares</option>
+        <option value="Soundbars">Soundbars</option>
       </select>
       <input type="text" id="search" placeholder="Buscar produto..." oninput="renderTable()" />
       <button class="btn btn-primary" onclick="copyPrompt()">⬡ Gerar prompt para o Claude</button>
@@ -152,25 +152,26 @@
 
 <script>
 const products = [
-  {id:0,name:"Smartphone Xiaomi Redmi 14C BR 4G Azul 256GB 4+4GB RAM Tela 6.8 MediaTek Helio G81 Ultra Camera 50MP",ean:"7908426309949",de:1414.53,por:1283.26,cat:"Celulares",parceiro:"Casas Bahia"},
-  {id:1,name:"Smartphone Samsung Galaxy A26 Tela 6.7\" 256GB 5G Camera Tripla 50MP Verde",ean:"7892509143387",de:1898.89,por:1766.96,cat:"Celulares",parceiro:"Casas Bahia"},
-  {id:2,name:"Smartphone Motorola Moto g35 5G Coral 256GB 4GB RAM Camera 50MP NFC Tela 6.7\"",ean:"7892597354382",de:1399.00,por:1142.96,cat:"Celulares",parceiro:"Casas Bahia"},
-  {id:3,name:"Smartphone Motorola Moto g06 4G Tela 6.9\" 256GB Camera 50MP Verde",ean:"7892597355983",de:948.74,por:893.36,cat:"Celulares",parceiro:"Casas Bahia"},
-  {id:4,name:"Smartphone Motorola Moto g06 4G Tela 6.9\" 256GB Camera 50MP Bege",ean:"7892597451173",de:1009.36,por:893.36,cat:"Celulares",parceiro:"Casas Bahia"},
-  {id:5,name:"Smartphone Motorola Moto G06 4G Tela 6.9\" 128GB Camera 50MP Azul Marinho",ean:"7892597355969",de:829.72,por:778.96,cat:"Celulares",parceiro:"Casas Bahia"},
-  {id:6,name:"Smart TV Samsung 55\" 4K QLED QN55Q7FAAGXZD Controle por Gestos Xbox Cloud Gaming",ean:"7892509141482",de:3660.12,por:3160.61,cat:"TVs",parceiro:"Casas Bahia"},
-  {id:7,name:"Smart TV Samsung 50\" 4K QLED QN50Q7FAAGXZD Vision AI Xbox Cloud Gaming",ean:"7892509141567",de:3358.95,por:2765.41,cat:"TVs",parceiro:"Casas Bahia"},
-  {id:8,name:"Smart TV 55\" 4K Samsung 55U8600F Crystal HDR Tizen Alexa Xbox Gaming",ean:"7892509140836",de:3306.45,por:2696.25,cat:"TVs",parceiro:"Casas Bahia"},
-  {id:9,name:"Smart TV 43\" Samsung Full HD UN43F6000FGXZD Xbox Cloud Gaming HDR Wi-Fi Bluetooth",ean:"7892509138314",de:2060.80,por:1696.47,cat:"TVs",parceiro:"Casas Bahia"},
-  {id:10,name:"Smart TV 43\" FHD Semp S42 LED Dolby Audio Google TV",ean:"7899968302003",de:1783.95,por:1481.01,cat:"TVs",parceiro:"Casas Bahia"},
-  {id:11,name:"Smart TV 43\" FHD Philco P43KRA LED Roku TV HDR10 Dolby Audio",ean:"7891356125447",de:1999.00,por:1298.96,cat:"TVs",parceiro:"Casas Bahia"},
-  {id:12,name:"Smart TV 43\" LG Full HD 43LR6700 Processador a5 Alexa LG Channels webOS 23",ean:"7893299946530",de:2199.22,por:1696.47,cat:"TVs",parceiro:"Casas Bahia"},
-  {id:13,name:"Smart TV 40\" Hisense 40A4NV Full HD DLED DTS VirtualX Vidaa U9",ean:"7908842856218",de:1445.33,por:1185.50,cat:"TVs",parceiro:"Casas Bahia"},
-  {id:14,name:"Smart TV 40\" Full HD Philco P40CRA Roku TV HDR10 Dolby Audio",ean:"7891356128028",de:1499.00,por:1283.41,cat:"TVs",parceiro:"Casas Bahia"},
-  {id:15,name:"Smart TV 32\" LG HD 32LR600BPSA Processador a5 Alexa LG Channels WebOS 23",ean:"7893299955426",de:1402.92,por:1111.76,cat:"TVs",parceiro:"Casas Bahia"},
-  {id:16,name:"Smart TV 32\" HD Samsung H5000F Tizen HDR PurColor",ean:"7892509138291",de:1428.90,por:1061.11,cat:"TVs",parceiro:"Casas Bahia"},
-  {id:17,name:"Smart TV 32\" HD Philco P32CRB Roku TV HDR10 Dolby Audio",ean:"7891356127991",de:1133.00,por:862.16,cat:"TVs",parceiro:"Casas Bahia"},
-  {id:18,name:"Celular Samsung Galaxy A17 4G Tela 6.7\" 128GB Super AMOLED Camera Tripla 50MP Azul",ean:"7892509144940",de:1220.00,por:1070.16,cat:"Celulares",parceiro:"Casas Bahia"},
+  {id:0,name:"Smart TV 32\" HD AOC 32S5155/78G Roku TV Wi-Fi Dolby Audio Preta",ean:"7898620272838",de:1153.95,por:1071.53,cat:"TVs",parceiro:"Aoc",estoque:14965},
+  {id:1,name:"Smart TV 65” 4K QLED TCL 65P7L Google TV até 120Hz Dolby Vision Atmos ",ean:"7899968303505",de:4723.95,por:4122.00,cat:"TVs",parceiro:"TCL/Semp",estoque:6715},
+  {id:2,name:"Smart TV 55” 4K QLED TCL 55P7L Google TV até 120Hz Dolby Vision Atmos ",ean:"7899968303536",de:3546.15,por:3035.00,cat:"TVs",parceiro:"TCL/Semp",estoque:5763},
+  {id:3,name:"Smart TV 43” Samsung Full HD UN43F6000FGXZD, Xbox Cloud Gaming, HDR, Som em Movimento Virtual, AI Energy Mode, Wi-Fi e Bluetooth",ean:"7892509138314",de:2418.90,por:2166.02,cat:"TVs",parceiro:"Samsung",estoque:4951},
+  {id:4,name:"Smart TV 75” 4K QLED TCL 75P7L Google TV até 120Hz Dolby Vision Atmos",ean:"7899968303529",de:5899.59,por:4939.05,cat:"TVs",parceiro:"TCL/Semp",estoque:3760},
+  {id:5,name:"Smart TV 43 Polegadas LG NANO 4K UHD AI NU850 WebOS 2026",ean:"7893299969867",de:2499.25,por:2251.67,cat:"TVs",parceiro:"Lg",estoque:3300},
+  {id:6,name:"Smart TV 43” FHD Semp S42 LED Dolby Audio Google TV",ean:"7899968302003",de:1993.95,por:1842.03,cat:"TVs",parceiro:"TCL/Semp",estoque:2638},
+  {id:7,name:"Smart TV 43\" LG Full HD 43LR6700 com Processador a5 Ger6 AI, Alexa integrada, LG Channels, webOS 23",ean:"7893299946530",de:2409.81,por:2327.03,cat:"TVs",parceiro:"Lg",estoque:2632},
+  {id:8,name:"Smart TV 55 Polegadas LG QNED Mini LED AI 4K QNED70 WebOS 2026",ean:"7893299969812",de:3599.36,por:3394.03,cat:"TVs",parceiro:"Lg",estoque:1901},
+  {id:9,name:"Smart TV Samsung 50 Polegadas 4K QLED QN50Q7FAAGXZD Vision AI Xbox Cloud",ean:"7892509141567",de:3621.45,por:3087.04,cat:"TVs",parceiro:"Samsung",estoque:1611},
+  {id:10,name:"Soundbar Samsung HW-B450F/ZD 300W Bluetooth 2.1 Canais Dolby Audio Titan Black",ean:"8806097220343",de:1299.13,por:1169.10,cat:"Soundbars",parceiro:"Samsung",estoque:1083},
+  {id:11,name:"Smart TV 85\" TCL QLED 85P8L 4K UHD Google 144 Hz",ean:"7899968303437",de:8999.90,por:8167.40,cat:"TVs",parceiro:"TCL/Semp",estoque:759},
+  {id:12,name:"Smart TV TCL 85 Polegadas 4K QLED 85P7K Google TV Áudio Onkyo Hands-Free",ean:"7899968301839",de:9242.53,por:7599.05,cat:"TVs",parceiro:"TCL/Semp",estoque:698},
+  {id:13,name:"Soundbar LG SH5A Bluetooth 600W RMS 4.1 Canais Subwoofer Sem Fio Preto",ean:"7893299961144",de:1713.95,por:1465.00,cat:"Soundbars",parceiro:"Lg",estoque:554},
+  {id:14,name:"Smart TV LG 86 Polegadas QNED 4K 86QNED73ASA WebOS 25 Processador AI a7 Gen8",ean:"7893299966422",de:9299.93,por:9020.03,cat:"TVs",parceiro:"Lg",estoque:514},
+  {id:15,name:"Smart TV 85\" 4K Samsung 85U8600F Crystal HDR Tizen Alexa e Xbox Gaming",ean:"7892509140690",de:9382.03,por:8244.03,cat:"TVs",parceiro:"Samsung",estoque:290},
+  {id:16,name:"Smart TV Samsung 75” 4K QLED Ultra QN75Q7FAAGXZD Vision AI Xbox Cloud Gaming Controle por Gestos",ean:"7892509141666",de:6846.93,por:6498.03,cat:"TVs",parceiro:"Samsung",estoque:199},
+  {id:17,name:"Smart TV 55 Polegadas LG Mini RGB evo AI 4K MRGB85 WebOS 2026",ean:"7893299969690",de:4999.00,por:4430.34,cat:"TVs",parceiro:"Lg",estoque:23},
+  {id:18,name:"Smart TV 98\" 4K LG 98UT9050PSA WebOS 24 WebOS 25 Processador a8 Smart Magic ",ean:"8806096296905",de:18699.00,por:16489.03,cat:"TVs",parceiro:"Lg",estoque:15},
+  {id:19,name:"Smart TV Samsung 100\" 4K Neo QLED Ultra QN100QN80FGXZD Painel até 144Hz Gaming Hub Dolby Atmos Preta Titan",ean:"8806097723103",de:43889.00,por:43649.03,cat:"TVs",parceiro:"Samsung",estoque:10},
 ];
 
 let results = products.map(p=>({...p,status:'Pendente',menor:null,media:null,diff:null,marketplace:null}));
@@ -250,7 +251,7 @@ function applyResults(){
 
 const PROMPT_TEMPLATE=`Você é um especialista em Marketplace e Pricing no e-commerce brasileiro.
 
-Analise os produtos abaixo e estime os preços praticados nos principais marketplaces (Mercado Livre, Amazon, Casas Bahia, Magalu, Shopee, Americanas). São TVs e Celulares — use seu conhecimento de treinamento para estimativas realistas.
+Analise os produtos abaixo e estime os preços praticados nos principais marketplaces (Mercado Livre, Amazon, Casas Bahia, Magalu, Shopee, Americanas). São TVs e Soundbars — use seu conhecimento de treinamento para estimativas realistas.
 
 PRODUTOS (id | nome | EAN | Preço Bandshop | Categoria):
 ${products.map(p=>`${p.id}|${p.name}|${p.ean}|R$${p.por.toFixed(2)}|${p.cat}`).join('\n')}
@@ -275,7 +276,7 @@ function copyExecPrompt(){
   const warn=results.filter(r=>r.status==='Atenção').length;
   const bad=results.filter(r=>r.status==='Fora do mercado').length;
   const top5=results.filter(r=>r.diff!=null).sort((a,b)=>b.diff-a.diff).slice(0,5);
-  const prompt=`Com base na análise de pricing da Bandshop (TVs e Celulares), gere uma análise executiva completa em português:
+  const prompt=`Com base na análise de pricing da Bandshop (TVs e Soundbars), gere uma análise executiva completa em português:
 
 DADOS GERAIS:
 - Total SKUs: ${results.length}
